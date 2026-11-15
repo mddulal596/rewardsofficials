@@ -1,15 +1,28 @@
 const { Telegraf } = require('telegraf');
 const { initializeApp } = require('firebase/app');
 const { getFirestore, doc, getDoc, setDoc, serverTimestamp } = require('firebase/firestore');
+const express = require('express'); // এক্সপ্রেস সার্ভার যোগ করা হলো রেন্ডার পোর্টের জন্য
 
-// টেলিগ্রাম বট টোকেন চেক (Render-এর Environment Variable থেকে রিড করবে)
-const BOT_TOKEN = "9217390232:AAF46GElCmGP9mp81d0CP85BEKgUB7DEaRg"; // আপনার পুরো টোকেনটি এখানে কোটেশনের ভেতরে থাকবে
+const app = express();
+const PORT = process.env.PORT || 8080;
+
+// একটি ডামি রুট রাখা হলো যাতে রেন্ডার পোর্ট ওপেন পায়
+app.get('/', (req, res) => {
+  res.send('RewardOfficials Telegram Bot is running successfully!');
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
+
+// টেলিগ্রাম বট টোকেন সরাসরি কোডে সেট করা
+const BOT_TOKEN = "9217390232:AAF46GElCmGP9mp81d0CP85BEKgUB7DEaRg"; 
 if (!BOT_TOKEN) {
   console.error("Error: BOT_TOKEN is missing!");
   process.exit(1);
 }
 
-// ফায়ারবেস ওয়েব কনফিগারেশন (সরাসরি কোডের মধ্যে বসানো)
+// ফায়ারবেস ওয়েব কনফিগারেশন
 const firebaseConfig = {
   apiKey: "AIzaSyDBCZZAebuQ3i66C8UNp9qdBI79RS7KHcc",
   authDomain: "rewardsofficials.firebaseapp.com",
