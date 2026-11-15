@@ -3,9 +3,9 @@ const { initializeApp } = require('firebase/app');
 const { getFirestore, doc, getDoc, setDoc, serverTimestamp } = require('firebase/firestore');
 
 // টেলিগ্রাম বট টোকেন চেক (Render-এর Environment Variable থেকে রিড করবে)
-const BOT_TOKEN = process.env.BOT_TOKEN;
+const BOT_TOKEN = "9217390232:AAF46GElCmGP9mp81d0CP85BEKgUB7DEaRg"; // আপনার পুরো টোকেনটি এখানে কোটেশনের ভেতরে থাকবে
 if (!BOT_TOKEN) {
-  console.error("9217390232:AAF46GElCmGP9mp81d0CP85BEKgUB7DEaRg");
+  console.error("Error: BOT_TOKEN is missing!");
   process.exit(1);
 }
 
