@@ -16,7 +16,7 @@ app.listen(PORT, () => {
 });
 
 // টেলিগ্রাম বট টোকেন সরাসরি কোডে সেট করা
-const BOT_TOKEN = "9217390232:AAF46GElCmGP9mp81d0CP85BEKgUB7DEaRg"; 
+const BOT_TOKEN = "9217390232:AAGLwFu8D-0qTTjqoiyI8TY_h0UFgsLbg30"; 
 if (!BOT_TOKEN) {
   console.error("Error: BOT_TOKEN is missing!");
   process.exit(1);
