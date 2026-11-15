@@ -1,0 +1,16 @@
+{
+  "name": "rewardsofficials-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for micro-jobs and rewards system connected with Firebase",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.11.0",
+    "telegraf": "^4.12.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
