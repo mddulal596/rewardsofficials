@@ -67,38 +67,38 @@
             <i class="fa-solid fa-sack-dollar absolute -right-4 -bottom-5 text-white/10 text-8xl pointer-events-none"></i>
         </div>
 
-        <!-- ফিচারগুলোর জন্য নতুন ২ লাইনে ৬টি বাটন (Grid Menu) -->
+        <!-- ফিচারগুলোর জন্য নতুন ৬টি গ্রিড বাটন (আলাদা পেজ লিংকযুক্ত) -->
         <div class="grid grid-cols-3 gap-2.5">
-            <!-- ১. এড টাস্ক -->
-            <button onclick="openAdsterraAd('https://asiafilm.org/4/692c7291084a34e93f094a8b56b69430', 'task')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+            <!-- ১. এড টাস্ক পেজ -->
+            <a href="adtasks.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md no-underline">
                 <div class="text-sky-400 text-lg"><i class="fa-solid fa-tasks"></i></div>
                 <span class="text-xs font-semibold text-slate-200">এড টাস্ক</span>
-            </button>
-            <!-- ২. ডেইলি বোনাস -->
-            <button onclick="openAdsterraAd('https://asiafilm.org/4/0d0044249c1cef410a86dcfa8f7e3460', 'daily')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+            </a>
+            <!-- ২. ডেইলি বোনাস পেজ -->
+            <a href="dailybonus.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md no-underline">
                 <div class="text-amber-400 text-lg"><i class="fa-solid fa-gift"></i></div>
                 <span class="text-xs font-semibold text-slate-200">ডেইলি বোনাস</span>
-            </button>
-            <!-- ৩. লিডার বোর্ড -->
-            <button onclick="showAlert('লিডারবোর্ড আপডেট হচ্ছে!')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+            </a>
+            <!-- ৩. লিডার বোর্ড পেজ -->
+            <a href="leaderboard.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md no-underline">
                 <div class="text-purple-400 text-lg"><i class="fa-solid fa-trophy"></i></div>
                 <span class="text-xs font-semibold text-slate-200">লিডার বোর্ড</span>
-            </button>
-            <!-- ৪. হিস্ট্রি -->
-            <button onclick="showAlert('আপনার কোনো হিস্ট্রি নেই!')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+            </a>
+            <!-- ৪. হিস্ট্রি পেজ -->
+            <a href="history.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md no-underline">
                 <div class="text-emerald-400 text-lg"><i class="fa-solid fa-clock-rotate-left"></i></div>
                 <span class="text-xs font-semibold text-slate-200">হিস্ট্রি</span>
-            </button>
-            <!-- ৫. উইথড্র -->
-            <button onclick="showAlert('পর্যাপ্ত ব্যালেন্স নেই বা উইথড্র সিস্টেম বন্ধ আছে!')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+            </a>
+            <!-- ৫. উইথড্র পেজ -->
+            <a href="withdraw.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md no-underline">
                 <div class="text-rose-400 text-lg"><i class="fa-solid fa-wallet"></i></div>
                 <span class="text-xs font-semibold text-slate-200">উইথড্র</span>
-            </button>
-            <!-- ৬. স্পিন হুইল -->
-            <button onclick="openAdsterraAd('https://asiafilm.org/4/9e9e3820d54db2d2cbe11cbfc394a5e9', 'spin')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+            </a>
+            <!-- ৬. স্পিন হুইল পেজ -->
+            <a href="spin.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md no-underline">
                 <div class="text-yellow-400 text-lg"><i class="fa-solid fa-dharmachakra"></i></div>
                 <span class="text-xs font-semibold text-slate-200">স্পিন হুইল</span>
-            </button>
+            </a>
         </div>
 
         <!-- Stats Grid -->
@@ -250,25 +250,21 @@
         মেসেজ
     </div>
 
-    <!-- Updated Mobile App Style Fixed Bottom Navigation Bar -->
+    <!-- Navigation Bar -->
     <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/98 backdrop-blur-lg border-t border-slate-800 z-40 py-2.5 px-6 shadow-2xl">
         <div class="max-w-md mx-auto flex justify-between items-center">
-            <!-- Home -->
-            <a href="#" class="flex flex-col items-center justify-center text-indigo-400 space-y-1 transition hover:scale-105">
+            <a href="index.html" class="flex flex-col items-center justify-center text-indigo-400 space-y-1 transition hover:scale-105">
                 <i class="fa-solid fa-house text-2xl"></i>
                 <span class="text-xs font-bold">হোম</span>
             </a>
-            <!-- Channel -->
             <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-sky-400 space-y-1 transition hover:scale-105">
                 <i class="fa-brands fa-telegram text-2xl"></i>
                 <span class="text-xs font-bold">চ্যানেল</span>
             </a>
-            <!-- Support -->
             <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 space-y-1 transition hover:scale-105">
                 <i class="fa-solid fa-headset text-2xl"></i>
                 <span class="text-xs font-bold">সাপোর্ট</span>
             </a>
-            <!-- Profile -->
             <button onclick="showProfileModal()" class="flex flex-col items-center justify-center text-slate-400 hover:text-amber-400 space-y-1 transition hover:scale-105 bg-transparent border-none cursor-pointer">
                 <i class="fa-solid fa-user text-2xl"></i>
                 <span class="text-xs font-bold">প্রোফাইল</span>
@@ -276,7 +272,7 @@
         </div>
     </nav>
 
-    <!-- Firebase & App Logic Script -->
+    <!-- Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -315,21 +311,6 @@
             showToast(msg);
         }
 
-        // এডস্টারার ডাইরেক্ট লিংক ওপেন করার ফাংশন
-        window.openAdsterraAd = function(adUrl, type) {
-            if (!currentUserId) return showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
-            
-            window.open(adUrl, '_blank');
-
-            if (type === 'daily') {
-                showToast('🎁 ডেইলি বোনাস এড ভিজিট করা হচ্ছে!');
-            } else if (type === 'spin') {
-                showToast('🎡 স্পিন হুইল এড লোড হচ্ছে...');
-            } else {
-                showToast('⚡ এড টাস্ক ওপেন হয়েছে!');
-            }
-        };
-
         window.showProfileModal = function() {
             if (!currentUserId) {
                 showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
@@ -350,8 +331,6 @@
                 const userRef = doc(db, 'users', currentUserId);
                 const docSnap = await getDoc(userRef);
 
-                const tasks = ['channel', 'facebook', 'youtube', 'instagram', 'tiktok', 'website'];
-
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     userTotalBalance = Number(data.balance || 0).toFixed(2);
@@ -359,18 +338,6 @@
 
                     document.getElementById('user-balance').textContent = `$${userTotalBalance}`;
                     document.getElementById('tasks-done').textContent = `${userTasksCount} টি`;
-
-                    tasks.forEach(t => {
-                        const field = `task${t.charAt(0).toUpperCase() + t.slice(1)}Done`;
-                        if (data[field]) {
-                            const btn = document.getElementById(`btn-task-${t}`);
-                            if(btn) {
-                                btn.textContent = 'সম্পন্ন ✅';
-                                btn.disabled = true;
-                                btn.className = 'bg-slate-700 text-slate-400 text-xs px-3.5 py-2 rounded-lg font-semibold cursor-not-allowed';
-                            }
-                        }
-                    });
 
                     if (data.lastDailyClaim) {
                         const lastClaim = data.lastDailyClaim.toDate();
@@ -475,8 +442,10 @@
             const flagField = `task${taskType.charAt(0).toUpperCase() + taskType.slice(1)}Done`;
             const btnId = `btn-task-${taskType}`;
             const btn = document.getElementById(btnId);
-            btn.textContent = 'যাচাই হচ্ছে...';
-            btn.disabled = true;
+            if(btn) {
+                btn.textContent = 'যাচাই হচ্ছে...';
+                btn.disabled = true;
+            }
 
             setTimeout(async () => {
                 try {
@@ -496,8 +465,10 @@
                     await loadUserData(currentUserId, currentUsername);
                 } catch (err) {
                     console.error(err);
-                    btn.disabled = false;
-                    btn.textContent = 'আবার চেষ্টা করুন';
+                    if(btn) {
+                        btn.disabled = false;
+                        btn.textContent = 'আবার চেষ্টা করুন';
+                    }
                     showToast('টাস্ক আপডেট ব্যর্থ হয়েছে।');
                 }
             }, 3000);
