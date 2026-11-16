@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro Rewards - Daily Bonus</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 font-sans antialiased pb-28">
+
+    <!-- Top Header -->
+    <header class="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/80 sticky top-0 z-30 px-4 py-3.5 shadow-lg">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="index.html" class="text-slate-300 hover:text-white bg-slate-700/60 w-9 h-9 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <div>
+                    <h1 class="font-bold text-base leading-tight tracking-wide">ডেইলি বোনাস পেজ</h1>
+                    <p class="text-xs text-slate-400">প্রতিদিনের ফ্রি রিওয়ার্ড</p>
+                </div>
+            </div>
+            <div class="bg-slate-900/90 px-3.5 py-1.5 rounded-full text-sm font-bold border border-amber-500/30 flex items-center shadow-inner">
+                <i class="fa-solid fa-coins text-amber-400 mr-1.5"></i>
+                <span id="user-balance" class="text-amber-300">$0.00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto w-full p-4 space-y-6 mt-2">
+
+        <!-- Banner Card -->
+        <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden border border-indigo-400/20 text-center space-y-4">
+            <div class="bg-white/15 w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-inner">
+                <i class="fa-solid fa-gift text-amber-300 text-3xl"></i>
+            </div>
+            <div class="space-y-1">
+                <h2 class="text-xl font-bold leading-snug text-white">প্রতিদিন ফ্রি বোনাস ক্লেইম করুন!</h2>
+                <p class="text-xs text-indigo-200">প্রতি ২৪ ঘণ্টায় একবার আপনার একাউন্টে যোগ করুন <span class="text-amber-300 font-bold">$0.50</span> বোনাস।</p>
+            </div>
+
+            <button id="daily-btn" onclick="claimDailyBonus()" class="w-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-extrabold text-sm py-3.5 rounded-2xl shadow-xl transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-sack-dollar text-lg"></i>
+                <span id="daily-btn-text">ডেইলি বোনাস ক্লেইম করুন ($0.50)</span>
+            </button>
+            <i class="fa-solid fa-gift absolute -right-6 -bottom-8 text-white/10 text-9xl pointer-events-none"></i>
+        </div>
+
+        <!-- Rules Box -->
+        <div class="bg-slate-800/90 p-4 rounded-2xl border border-slate-700/70 space-y-3 shadow-lg">
+            <div class="flex items-center space-x-2.5 text-indigo-400">
+                <i class="fa-solid fa-circle-info text-lg"></i>
+                <h3 class="font-bold text-sm text-white">নিয়মাবলী ও শর্তসমূহ:</h3>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                <li>প্রতি ২৪ ঘণ্টায় শুধুমাত্র একবার এই বোনাস ক্লেইম করা যাবে।</li>
+                <li>বোনাস সফলভাবে ক্লেইম করার সাথে সাথেই আপনার মূল ব্যালেন্সে টাকা যোগ হয়ে যাবে।</li>
+                <li>সঠিক টেলিগ্রাম আইডি দিয়ে লগইন করা না থাকলে বোনাস যোগ হবে না।</li>
+            </ul>
+        </div>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-600 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50 whitespace-nowrap">
+        মেসেজ
+    </div>
+
+    <!-- Navigation Bar (Fixed Bottom) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/98 backdrop-blur-lg border-t border-slate-800 z-40 py-2.5 px-6 shadow-2xl">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex flex-col items-center justify-center text-slate-400 hover:text-indigo-400 space-y-1 transition hover:scale-105">
+                <i class="fa-solid fa-house text-2xl"></i>
+                <span class="text-xs font-bold">হোম</span>
+            </a>
+            <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-sky-400 space-y-1 transition hover:scale-105">
+                <i class="fa-brands fa-telegram text-2xl"></i>
+                <span class="text-xs font-bold">চ্যানেল</span>
+            </a>
+            <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 space-y-1 transition hover:scale-105">
+                <i class="fa-solid fa-headset text-2xl"></i>
+                <span class="text-xs font-bold">সাপোর্ট</span>
+            </a>
+            <button onclick="showProfileModal()" class="flex flex-col items-center justify-center text-slate-400 hover:text-amber-400 space-y-1 transition hover:scale-105 bg-transparent border-none cursor-pointer">
+                <i class="fa-solid fa-user text-2xl"></i>
+                <span class="text-xs font-bold">প্রোফাইল</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCZZAebuQ3i66C8UNp9qdBI79RS7KHcc",
+            authDomain: "rewardsofficials.firebaseapp.com",
+            projectId: "rewardsofficials",
+            storageBucket: "rewardsofficials.firebasestorage.app",
+            messagingSenderId: "17078908900",
+            appId: "1:17078908900:web:4a11cc8c4f41fac5ceb9f1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        let currentUserId = localStorage.getItem('saved_tg_id') || (tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : null);
+        let currentUsername = tg?.initDataUnsafe?.user?.username || 'User';
+        let userTotalBalance = "0.00";
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => toast.classList.add('opacity-0'), 3000);
+        }
+
+        window.showProfileModal = function() {
+            if (!currentUserId) {
+                showToast('প্রথমে মেইন পেজ থেকে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
+                return;
+            }
+            alert(`👤 প্রোফাইল বিবরণ:\nTelegram ID: ${currentUserId}\nব্যালেন্স: $${userTotalBalance}`);
+        };
+
+        // ইউজারের ব্যালেন্স এবং ডেইলি বোনাস স্ট্যাটাস চেক করা
+        async function loadUserData() {
+            if (!currentUserId) {
+                showToast('⚠️ গেস্ট মোড: অনুগ্রহ করে মেইন পেজ থেকে লগইন করুন।');
+                return;
+            }
+            try {
+                const userRef = doc(db, 'users', currentUserId);
+                const docSnap = await getDoc(userRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    userTotalBalance = Number(data.balance || 0).toFixed(2);
+                    document.getElementById('user-balance').textContent = `$${userTotalBalance}`;
+
+                    if (data.lastDailyClaim) {
+                        const lastClaim = data.lastDailyClaim.toDate();
+                        if (new Date() - lastClaim < 24 * 60 * 60 * 1000) {
+                            const dailyBtn = document.getElementById('daily-btn');
+                            dailyBtn.disabled = true;
+                            dailyBtn.classList.remove('bg-amber-400', 'hover:bg-amber-300');
+                            dailyBtn.classList.add('bg-slate-700', 'text-slate-400', 'cursor-not-allowed');
+                            document.getElementById('daily-btn-text').textContent = 'ক্লেইমড ⏳ (২৪ ঘণ্টায় একবার)';
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        loadUserData();
+
+        // ডেইলি বোনাস ক্লেইম করার ফাংশন
+        window.claimDailyBonus = async function() {
+            if (!currentUserId) return showToast('প্রথমে মেইন পেজ থেকে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
+            try {
+                const userRef = doc(db, 'users', currentUserId);
+                const docSnap = await getDoc(userRef);
+                const data = docSnap.exists() ? docSnap.data() : {};
+
+                if (data.lastDailyClaim && (new Date() - data.lastDailyClaim.toDate() < 24 * 60 * 60 * 1000)) {
+                    return showToast('⏳ আপনি আজ ইতিমধ্যে ডেইলি বোনাস নিয়েছেন!');
+                }
+
+                await setDoc(userRef, {
+                    balance: increment(0.50),
+                    lastDailyClaim: serverTimestamp()
+                }, { merge: true });
+
+                showToast('🎉 অভিনন্দন! $0.50 ডেইলি বোনাস যোগ হয়েছে!');
+                loadUserData();
+
+                const dailyBtn = document.getElementById('daily-btn');
+                dailyBtn.disabled = true;
+                dailyBtn.classList.remove('bg-amber-400', 'hover:bg-amber-300');
+                dailyBtn.classList.add('bg-slate-700', 'text-slate-400', 'cursor-not-allowed');
+                document.getElementById('daily-btn-text').textContent = 'ক্লেইমড ⏳ (২৪ ঘণ্টায় একবার)';
+
+            } catch (error) {
+                console.error(error);
+                showToast('বোনাস নিতে সমস্যা হয়েছে।');
+            }
+        };
+    </script>
+</body>
+</html>
