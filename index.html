@@ -2,95 +2,367 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Rewards - Dashboard</title>
-    <!-- Tailwind CSS CDN -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro Rewards - Official App</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
 </head>
-<body class="bg-slate-900 text-white font-sans antialiased min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col justify-between font-sans antialiased">
 
-    <!-- Header Section -->
-    <header class="bg-slate-800 border-b border-slate-700 p-4 shadow-md">
+    <!-- Top Header -->
+    <header class="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/80 sticky top-0 z-30 px-4 py-3.5 shadow-lg">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-indigo-600 p-2.5 rounded-full text-xl">
-                    <i class="fa-solid fa-trophy text-amber-300"></i>
+                <div class="bg-gradient-to-tr from-indigo-600 to-purple-600 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                    <i class="fa-solid fa-crown text-amber-300 text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg">Pro Rewards</h1>
-                    <p class="text-xs text-slate-400">Official Earning Platform</p>
+                    <h1 class="font-bold text-base leading-tight tracking-wide">Pro Rewards</h1>
+                    <p id="user-display-name" class="text-xs text-slate-400">লোড হচ্ছে...</p>
                 </div>
             </div>
-            <div class="bg-slate-700 px-3 py-1.5 rounded-full text-sm font-semibold border border-slate-600">
-                <i class="fa-solid fa-coins text-amber-400 mr-1"></i> <span id="user-balance">$0.00</span>
+            <div class="bg-slate-900/90 px-3.5 py-1.5 rounded-full text-sm font-bold border border-amber-500/30 flex items-center shadow-inner">
+                <i class="fa-solid fa-coins text-amber-400 mr-1.5"></i>
+                <span id="user-balance" class="text-amber-300">$0.00</span>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-md mx-auto p-4 w-full space-y-4 mb-auto">
-        <!-- Welcome Banner -->
-        <div class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl p-5 shadow-lg text-center relative overflow-hidden">
-            <div class="relative z-10">
-                <h2 class="text-xl font-bold mb-1">স্বাগতম, ব্যবহারকারী! 🎉</h2>
-                <p class="text-indigo-100 text-sm">টাস্ক সম্পন্ন করুন এবং প্রতিদিন আকর্ষণীয় রিওয়ার্ড জিতুন।</p>
-            </div>
-            <div class="absolute -right-6 -bottom-6 text-indigo-500/20 text-8xl">
-                <i class="fa-solid fa-gift"></i>
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto w-full p-4 space-y-4 mb-auto">
+
+        <!-- Browser Fallback Login (শুধুমাত্র টেলিগ্রামের বাইরে ব্রাউজারে খুললে দেখাবে) -->
+        <div id="browser-login-box" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-xl p-3.5 space-y-2">
+            <p class="text-xs text-amber-200"><i class="fa-solid fa-circle-info mr-1"></i> ব্রাউজার মোড: আপনার ব্যালেন্স দেখতে Telegram ID দিন</p>
+            <div class="flex space-x-2">
+                <input type="number" id="manual-tg-id" placeholder="যেমন: 7164995637" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                <button onclick="loadManualUser()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap">লগইন</button>
             </div>
         </div>
 
-        <!-- Quick Stats -->
+        <!-- Hero Card & Daily Bonus -->
+        <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 rounded-2xl p-5 shadow-xl relative overflow-hidden border border-indigo-400/20">
+            <div class="relative z-10 flex justify-between items-center">
+                <div class="space-y-1.5 max-w-[68%]">
+                    <span class="inline-block bg-white/15 text-[11px] font-semibold px-2.5 py-0.5 rounded-full text-indigo-100">ডেইলি রিওয়ার্ড</span>
+                    <h2 class="text-lg font-bold leading-snug">প্রতিদিন ফ্রি বোনাস ক্লেইম করুন!</h2>
+                    <p class="text-xs text-indigo-200">প্রতি ২৪ ঘণ্টায় একবার $0.50 বোনাস নিন।</p>
+                </div>
+                <button id="daily-btn" onclick="claimDailyBonus()" class="bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-bold text-xs px-4 py-3 rounded-xl shadow-lg transition flex flex-col items-center">
+                    <i class="fa-solid fa-gift text-lg mb-1"></i>
+                    <span id="daily-btn-text">ক্লেইম $0.50</span>
+                </button>
+            </div>
+            <i class="fa-solid fa-sack-dollar absolute -right-4 -bottom-5 text-white/10 text-8xl pointer-events-none"></i>
+        </div>
+
+        <!-- Stats Grid -->
         <div class="grid grid-cols-2 gap-3">
-            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center">
-                <p class="text-slate-400 text-xs mb-1">সম্পন্ন টাস্ক</p>
-                <h3 class="text-xl font-bold text-indigo-400" id="tasks-done">0 টি</h3>
+            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/70 flex items-center space-x-3">
+                <div class="bg-indigo-500/20 text-indigo-400 w-10 h-10 rounded-lg flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                    <p class="text-[11px] text-slate-400">সম্পন্ন টাস্ক</p>
+                    <h3 id="tasks-done" class="text-base font-bold text-white">0 টি</h3>
+                </div>
             </div>
-            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center">
-                <p class="text-slate-400 text-xs mb-1">রেফারেল বোনাস</p>
-                <h3 class="text-xl font-bold text-emerald-400">$0.50 / Ref</h3>
+            <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/70 flex items-center space-x-3">
+                <div class="bg-emerald-500/20 text-emerald-400 w-10 h-10 rounded-lg flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <p class="text-[11px] text-slate-400">রেফার বোনাস</p>
+                    <h3 class="text-base font-bold text-emerald-400">$0.50 / রেফার</h3>
+                </div>
             </div>
         </div>
 
-        <!-- Task List Section -->
-        <div class="space-y-3">
-            <h3 class="text-md font-semibold text-slate-300 px-1"><i class="fa-solid fa-list-check mr-2 text-indigo-400"></i>উপলব্ধ টাস্কসমূহ</h3>
-            
-            <!-- Task Item 1 -->
-            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-blue-500/20 text-blue-400 p-3 rounded-lg">
-                        <i class="fa-brands fa-telegram text-xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-medium text-sm">চ্যানেল জয়েন করুন</h4>
-                        <p class="text-xs text-emerald-400 font-semibold">+ $0.20 রিওয়ার্ড</p>
-                    </div>
-                </div>
-                <button onclick="alert('টাস্ক সম্পন্ন করতে টেলিগ্রাম বটে যান!')" class="bg-indigo-600 hover:bg-indigo-500 text-xs px-4 py-2 rounded-lg font-medium transition">শুরু করুন</button>
+        <!-- Tasks Section -->
+        <div class="space-y-2.5">
+            <div class="flex justify-between items-center px-1">
+                <h3 class="text-sm font-bold text-slate-200"><i class="fa-solid fa-list-check text-indigo-400 mr-1.5"></i>উপলব্ধ টাস্কসমূহ</h3>
+                <a href="https://t.me/rewardsofficials_bot" target="_blank" class="text-xs text-indigo-400 hover:underline">বট ওপেন করুন <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
             </div>
 
-            <!-- Task Item 2 -->
-            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
+            <!-- Task 1: Official Channel -->
+            <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700/70 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="bg-amber-500/20 text-amber-400 p-3 rounded-lg">
-                        <i class="fa-solid fa-globe text-xl"></i>
+                    <div class="bg-sky-500/20 text-sky-400 w-11 h-11 rounded-xl flex items-center justify-center text-xl">
+                        <i class="fa-brands fa-telegram"></i>
                     </div>
                     <div>
-                        <h4 class="font-medium text-sm">ওয়েবসাইট ভিজিট</h4>
-                        <p class="text-xs text-emerald-400 font-semibold">+ $0.10 রিورد</p>
+                        <h4 class="font-semibold text-sm text-white">অফিশিয়াল চ্যানেল জয়েন</h4>
+                        <p class="text-xs text-emerald-400 font-semibold">+$0.20 রিওয়ার্ড</p>
                     </div>
                 </div>
-                <button onclick="alert('টাস্ক সম্পন্ন করতে টেলিগ্রাম বটে যান!')" class="bg-indigo-600 hover:bg-indigo-500 text-xs px-4 py-2 rounded-lg font-medium transition">ভিজিট</button>
+                <button id="btn-task-channel" onclick="completeTask('channel', 'https://t.me/rewardofficials', 0.20)" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-xs px-4 py-2 rounded-lg font-semibold transition">
+                    জয়েন করুন
+                </button>
+            </div>
+
+            <!-- Task 2: Website Visit -->
+            <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700/70 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-amber-500/20 text-amber-400 w-11 h-11 rounded-xl flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-sm text-white">ওয়েবসাইট ভিজিট করুন</h4>
+                        <p class="text-xs text-emerald-400 font-semibold">+$0.10 রিওয়ার্ড</p>
+                    </div>
+                </div>
+                <button id="btn-task-website" onclick="completeTask('website', 'https://rewardsofficials.onrender.com', 0.10)" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-xs px-4 py-2 rounded-lg font-semibold transition">
+                    ভিজিট করুন
+                </button>
             </div>
         </div>
+
+        <!-- Referral Box -->
+        <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700/70 space-y-2.5">
+            <div class="flex items-center justify-between">
+                <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-share-nodes text-emerald-400 mr-1.5"></i>বন্ধুদের রেফার করুন</h3>
+                <span class="text-[11px] bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded font-medium">+$0.50 প্রতি রেফার</span>
+            </div>
+            <p class="text-xs text-slate-400">আপনার রেফারেল লিংক শেয়ার করে আনলিমিটেড বোনাস আয় করুন:</p>
+            <div class="flex items-center space-x-2">
+                <input type="text" id="ref-link-input" readonly value="https://t.me/rewardsofficials_bot" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-300 select-all focus:outline-none">
+                <button onclick="copyReferralLink()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center space-x-1">
+                    <i class="fa-regular fa-copy"></i>
+                    <span>কপি</span>
+                </button>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Footer Navigation -->
-    <footer class="bg-slate-800 border-t border-slate-700 py-3 px-6 text-center text-xs text-slate-400">
-        <p>&copy; 2026 Rewards Officials. All rights reserved.</p>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-16 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-600 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50 whitespace-nowrap">
+        মেসেজ
+    </div>
+
+    <!-- Bottom Footer -->
+    <footer class="bg-slate-800/90 border-t border-slate-700/80 py-3 px-4 text-center text-xs text-slate-400">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <a href="https://t.me/rewardofficials" target="_blank" class="hover:text-sky-400 transition"><i class="fa-brands fa-telegram mr-1"></i>অফিশিয়াল চ্যানেল</a>
+            <span>&copy; 2026 Pro Rewards</span>
+            <a href="https://t.me/rewardsofficials_bot" target="_blank" class="hover:text-indigo-400 transition"><i class="fa-solid fa-robot mr-1"></i>টেলিগ্রাম বট</a>
+        </div>
     </footer>
 
+    <!-- Firebase & App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // ফায়ারবেস কনফিগারেশন
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCZZAebuQ3i66C8UNp9qdBI79RS7KHcc",
+            authDomain: "rewardsofficials.firebaseapp.com",
+            projectId: "rewardsofficials",
+            storageBucket: "rewardsofficials.firebasestorage.app",
+            messagingSenderId: "17078908900",
+            appId: "1:17078908900:web:4a11cc8c4f41fac5ceb9f1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Telegram WebApp ইনিশিয়ালাইজ
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        let currentUserId = null;
+        let currentUsername = "User";
+
+        // টোস্ট মেসেজ দেখানোর ফাংশন
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => toast.classList.add('opacity-0'), 3000);
+        }
+
+        // ইউজারের ডেটা লোড ও UI আপডেট
+        async function loadUserData(telegramId, displayName = null) {
+            if (!telegramId) return;
+            currentUserId = String(telegramId);
+
+            document.getElementById('user-display-name').textContent = displayName ? `${displayName} (ID: ${currentUserId})` : `ID: ${currentUserId}`;
+            document.getElementById('ref-link-input').value = `https://t.me/rewardsofficials_bot?start=${currentUserId}`;
+
+            try {
+                const userRef = doc(db, 'users', currentUserId);
+                const docSnap = await getDoc(userRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const balance = Number(data.balance || 0).toFixed(2);
+                    document.getElementById('user-balance').textContent = `$${balance}`;
+                    document.getElementById('tasks-done').textContent = `${data.tasksDone || 0} টি`;
+
+                    // চ্যানেল টাস্ক চেক
+                    if (data.taskChannelDone) {
+                        const btn = document.getElementById('btn-task-channel');
+                        btn.textContent = 'সম্পন্ন ✅';
+                        btn.disabled = true;
+                        btn.className = 'bg-slate-700 text-slate-400 text-xs px-3.5 py-2 rounded-lg font-semibold cursor-not-allowed';
+                    }
+
+                    // ওয়েবসাইট টাস্ক চেক
+                    if (data.taskWebsiteDone) {
+                        const btn = document.getElementById('btn-task-website');
+                        btn.textContent = 'সম্পন্ন ✅';
+                        btn.disabled = true;
+                        btn.className = 'bg-slate-700 text-slate-400 text-xs px-3.5 py-2 rounded-lg font-semibold cursor-not-allowed';
+                    }
+
+                    // ডেইলি বোনাস ২৪ ঘণ্টা কুলডাউন চেক
+                    if (data.lastDailyClaim) {
+                        const lastClaim = data.lastDailyClaim.toDate();
+                        if (new Date() - lastClaim < 24 * 60 * 60 * 1000) {
+                            const dailyBtn = document.getElementById('daily-btn');
+                            dailyBtn.disabled = true;
+                            dailyBtn.classList.remove('bg-amber-400', 'hover:bg-amber-300');
+                            dailyBtn.classList.add('bg-slate-700', 'text-slate-400', 'cursor-not-allowed');
+                            document.getElementById('daily-btn-text').textContent = 'ক্লেইমড ⏳';
+                        }
+                    }
+                } else {
+                    // নতুন ইউজার হলে ডেটাবেজে তৈরি করা
+                    await setDoc(userRef, {
+                        telegramId: currentUserId,
+                        username: currentUsername,
+                        balance: 0,
+                        tasksDone: 0,
+                        createdAt: serverTimestamp()
+                    });
+                    document.getElementById('user-balance').textContent = '$0.00';
+                    document.getElementById('tasks-done').textContent = '0 টি';
+                }
+            } catch (error) {
+                console.error("Firestore error:", error);
+                showToast('ডেটা লোড করতে সমস্যা হয়েছে!');
+            }
+        }
+
+        // ডেইলি বোনাস ক্লেইম ফাংশন
+        window.claimDailyBonus = async function() {
+            if (!currentUserId) return showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
+            try {
+                const userRef = doc(db, 'users', currentUserId);
+                const docSnap = await getDoc(userRef);
+                const data = docSnap.exists() ? docSnap.data() : {};
+
+                if (data.lastDailyClaim && (new Date() - data.lastDailyClaim.toDate() < 24 * 60 * 60 * 1000)) {
+                    return showToast('⏳ আপনি আজ ইতিমধ্যে ডেইলি বোনাস নিয়েছেন!');
+                }
+
+                await setDoc(userRef, {
+                    balance: increment(0.50),
+                    lastDailyClaim: serverTimestamp()
+                }, { merge: true });
+
+                showToast('🎉 অভিনন্দন! $0.50 ডেইলি বোনাস যোগ হয়েছে!');
+                await loadUserData(currentUserId, currentUsername);
+            } catch (error) {
+                console.error(error);
+                showToast('বোনাস নিতে সমস্যা হয়েছে।');
+            }
+        };
+
+        // টাস্ক কমপ্লিট ফাংশন
+        window.completeTask = async function(taskType, url, reward) {
+            if (!currentUserId) return showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
+
+            // লিংক ওপেন করা
+            if (tg && url.includes('t.me')) {
+                tg.openTelegramLink(url);
+            } else {
+                window.open(url, '_blank');
+            }
+
+            const flagField = taskType === 'channel' ? 'taskChannelDone' : 'taskWebsiteDone';
+            const btnId = taskType === 'channel' ? 'btn-task-channel' : 'btn-task-website';
+            const btn = document.getElementById(btnId);
+            btn.textContent = 'যাচাই হচ্ছে...';
+            btn.disabled = true;
+
+            setTimeout(async () => {
+                try {
+                    const userRef = doc(db, 'users', currentUserId);
+                    const snap = await getDoc(userRef);
+                    if (snap.exists() && snap.data()[flagField]) {
+                        return showToast('এই টাস্কটি আগেই সম্পন্ন করেছেন!');
+                    }
+
+                    await setDoc(userRef, {
+                        balance: increment(reward),
+                        tasksDone: increment(1),
+                        [flagField]: true
+                    }, { merge: true });
+
+                    showToast(`✅ টাস্ক সম্পন্ন! +$${reward.toFixed(2)} যোগ হয়েছে।`);
+                    await loadUserData(currentUserId, currentUsername);
+                } catch (err) {
+                    console.error(err);
+                    btn.disabled = false;
+                    btn.textContent = 'আবার চেষ্টা করুন';
+                    showToast('টাস্ক আপডেট ব্যর্থ হয়েছে।');
+                }
+            }, 3000);
+        };
+
+        // রেফারেল লিংক কপি
+        window.copyReferralLink = function() {
+            const input = document.getElementById('ref-link-input');
+            navigator.clipboard.writeText(input.value).then(() => {
+                showToast('🔗 রেফারেল লিংক কপি হয়েছে!');
+            });
+        };
+
+        // ব্রাউজার মোডে ম্যানুয়াল আইডি লোড
+        window.loadManualUser = function() {
+            const idVal = document.getElementById('manual-tg-id').value.trim();
+            if (!idVal) return showToast('সঠিক Telegram ID দিন!');
+            localStorage.setItem('saved_tg_id', idVal);
+            loadUserData(idVal, 'Web User');
+        };
+
+        // অ্যাপ চালু হলে ইউজার শনাক্ত করা
+        const tgUser = tg?.initDataUnsafe?.user;
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramId = urlParams.get('id');
+        const savedId = localStorage.getItem('saved_tg_id');
+
+        if (tgUser && tgUser.id) {
+            currentUsername = tgUser.username || tgUser.first_name || 'User';
+            loadUserData(tgUser.id, tgUser.first_name);
+        } else if (paramId) {
+            loadUserData(paramId, 'Web User');
+        } else {
+            document.getElementById('browser-login-box').classList.remove('hidden');
+            if (savedId) {
+                document.getElementById('manual-tg-id').value = savedId;
+                loadUserData(savedId, 'Web User');
+            } else {
+                document.getElementById('user-display-name').textContent = 'গেস্ট মোড';
+            }
+        }
+    </script>
 </body>
 </html>
