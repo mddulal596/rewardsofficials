@@ -18,7 +18,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between font-sans antialiased">
+<body class="min-h-screen flex flex-col justify-between font-sans antialiased pb-20">
 
     <!-- Top Header -->
     <header class="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/80 sticky top-0 z-30 px-4 py-3.5 shadow-lg">
@@ -42,7 +42,7 @@
     <!-- Main Container -->
     <main class="max-w-md mx-auto w-full p-4 space-y-4 mb-auto">
 
-        <!-- Browser Fallback Login (শুধুমাত্র টেলিগ্রামের বাইরে ব্রাউজারে খুললে দেখাবে) -->
+        <!-- Browser Fallback Login -->
         <div id="browser-login-box" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-xl p-3.5 space-y-2">
             <p class="text-xs text-amber-200"><i class="fa-solid fa-circle-info mr-1"></i> ব্রাউজার মোড: আপনার ব্যালেন্স দেখতে Telegram ID দিন</p>
             <div class="flex space-x-2">
@@ -96,7 +96,7 @@
                 <a href="https://t.me/rewardsofficials_bot" target="_blank" class="text-xs text-indigo-400 hover:underline">বট ওপেন করুন <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
             </div>
 
-            <!-- Task 1: Official Channel -->
+            <!-- Task 1 -->
             <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700/70 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <div class="bg-sky-500/20 text-sky-400 w-11 h-11 rounded-xl flex items-center justify-center text-xl">
@@ -112,7 +112,7 @@
                 </button>
             </div>
 
-            <!-- Task 2: Website Visit -->
+            <!-- Task 2 -->
             <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700/70 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <div class="bg-amber-500/20 text-amber-400 w-11 h-11 rounded-xl flex items-center justify-center text-xl">
@@ -148,25 +148,41 @@
     </main>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-16 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-600 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50 whitespace-nowrap">
+    <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-600 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50 whitespace-nowrap">
         মেসেজ
     </div>
 
-    <!-- Bottom Footer -->
-    <footer class="bg-slate-800/90 border-t border-slate-700/80 py-3 px-4 text-center text-xs text-slate-400">
-        <div class="max-w-md mx-auto flex justify-between items-center">
-            <a href="https://t.me/rewardofficials" target="_blank" class="hover:text-sky-400 transition"><i class="fa-brands fa-telegram mr-1"></i>অফিশিয়াল চ্যানেল</a>
-            <span>&copy; 2026 Pro Rewards</span>
-            <a href="https://t.me/rewardsofficials_bot" target="_blank" class="hover:text-indigo-400 transition"><i class="fa-solid fa-robot mr-1"></i>টেলিগ্রাম বট</a>
+    <!-- Mobile App Style Fixed Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 z-40 py-2 px-4 shadow-2xl">
+        <div class="max-w-md mx-auto grid grid-cols-4 gap-1 text-center">
+            <!-- Home -->
+            <a href="#" class="flex flex-col items-center justify-center text-indigo-400 py-1 transition">
+                <i class="fa-solid fa-house text-lg mb-0.5"></i>
+                <span class="text-[10px] font-medium">হোম</span>
+            </a>
+            <!-- Channel -->
+            <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-sky-400 py-1 transition">
+                <i class="fa-brands fa-telegram text-lg mb-0.5"></i>
+                <span class="text-[10px] font-medium">চ্যানেল</span>
+            </a>
+            <!-- Bot -->
+            <a href="https://t.me/rewardsofficials_bot" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-indigo-400 py-1 transition">
+                <i class="fa-solid fa-robot text-lg mb-0.5"></i>
+                <span class="text-[10px] font-medium">বট</span>
+            </a>
+            <!-- Support / Channel Updates -->
+            <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 py-1 transition">
+                <i class="fa-solid fa-headset text-lg mb-0.5"></i>
+                <span class="text-[10px] font-medium">সাপোর্ট</span>
+            </a>
         </div>
-    </footer>
+    </nav>
 
-    <!-- Firebase & App Logic -->
+    <!-- Firebase & App Logic Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // ফায়ারবেস কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyDBCZZAebuQ3i66C8UNp9qdBI79RS7KHcc",
             authDomain: "rewardsofficials.firebaseapp.com",
@@ -179,7 +195,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Telegram WebApp ইনিশিয়ালাইজ
         const tg = window.Telegram?.WebApp;
         if (tg) {
             tg.ready();
@@ -189,7 +204,6 @@
         let currentUserId = null;
         let currentUsername = "User";
 
-        // টোস্ট মেসেজ দেখানোর ফাংশন
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
@@ -197,7 +211,6 @@
             setTimeout(() => toast.classList.add('opacity-0'), 3000);
         }
 
-        // ইউজারের ডেটা লোড ও UI আপডেট
         async function loadUserData(telegramId, displayName = null) {
             if (!telegramId) return;
             currentUserId = String(telegramId);
@@ -215,7 +228,6 @@
                     document.getElementById('user-balance').textContent = `$${balance}`;
                     document.getElementById('tasks-done').textContent = `${data.tasksDone || 0} টি`;
 
-                    // চ্যানেল টাস্ক চেক
                     if (data.taskChannelDone) {
                         const btn = document.getElementById('btn-task-channel');
                         btn.textContent = 'সম্পন্ন ✅';
@@ -223,7 +235,6 @@
                         btn.className = 'bg-slate-700 text-slate-400 text-xs px-3.5 py-2 rounded-lg font-semibold cursor-not-allowed';
                     }
 
-                    // ওয়েবসাইট টাস্ক চেক
                     if (data.taskWebsiteDone) {
                         const btn = document.getElementById('btn-task-website');
                         btn.textContent = 'সম্পন্ন ✅';
@@ -231,7 +242,6 @@
                         btn.className = 'bg-slate-700 text-slate-400 text-xs px-3.5 py-2 rounded-lg font-semibold cursor-not-allowed';
                     }
 
-                    // ডেইলি বোনাস ২৪ ঘণ্টা কুলডাউন চেক
                     if (data.lastDailyClaim) {
                         const lastClaim = data.lastDailyClaim.toDate();
                         if (new Date() - lastClaim < 24 * 60 * 60 * 1000) {
@@ -243,7 +253,6 @@
                         }
                     }
                 } else {
-                    // নতুন ইউজার হলে ডেটাবেজে তৈরি করা
                     await setDoc(userRef, {
                         telegramId: currentUserId,
                         username: currentUsername,
@@ -260,7 +269,6 @@
             }
         }
 
-        // ডেইলি বোনাস ক্লেইম ফাংশন
         window.claimDailyBonus = async function() {
             if (!currentUserId) return showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
             try {
@@ -285,11 +293,9 @@
             }
         };
 
-        // টাস্ক কমপ্লিট ফাংশন
         window.completeTask = async function(taskType, url, reward) {
             if (!currentUserId) return showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
 
-            // লিংক ওপেন করা
             if (tg && url.includes('t.me')) {
                 tg.openTelegramLink(url);
             } else {
@@ -327,7 +333,6 @@
             }, 3000);
         };
 
-        // রেফারেল লিংক কপি
         window.copyReferralLink = function() {
             const input = document.getElementById('ref-link-input');
             navigator.clipboard.writeText(input.value).then(() => {
@@ -335,7 +340,6 @@
             });
         };
 
-        // ব্রাউজার মোডে ম্যানুয়াল আইডি লোড
         window.loadManualUser = function() {
             const idVal = document.getElementById('manual-tg-id').value.trim();
             if (!idVal) return showToast('সঠিক Telegram ID দিন!');
@@ -343,7 +347,6 @@
             loadUserData(idVal, 'Web User');
         };
 
-        // অ্যাপ চালু হলে ইউজার শনাক্ত করা
         const tgUser = tg?.initDataUnsafe?.user;
         const urlParams = new URLSearchParams(window.location.search);
         const paramId = urlParams.get('id');
