@@ -137,7 +137,7 @@ bot.command('tasks', async (ctx) => {
 // টাস্ক বাটন অ্যাকশন হ্যান্ডলার
 bot.action('task_channel', async (ctx) => {
   await ctx.answerCbQuery();
-  ctx.reply('দয়া করে আমাদের চ্যানেলে জয়েন করুন এবং আপনার টাস্ক সম্পন্ন করুন: https://t.me/your_channel_link');
+  ctx.reply('দয়া করে আমাদের চ্যানেলে জয়েন করুন এবং আপনার টাস্ক সম্পন্ন করুন: https://t.me/rewardofficials');
 });
 
 bot.action('task_website', async (ctx) => {
