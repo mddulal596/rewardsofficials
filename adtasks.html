@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro Rewards - Ad Tasks</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between font-sans antialiased pb-24">
+
+    <!-- Top Header -->
+    <header class="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/80 sticky top-0 z-30 px-4 py-3.5 shadow-lg">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="index.html" class="text-slate-300 hover:text-white bg-slate-700/60 w-9 h-9 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <div>
+                    <h1 class="font-bold text-base leading-tight tracking-wide">এড টাস্ক পেজ</h1>
+                    <p class="text-xs text-slate-400">বিজ্ঞাপন দেখে আয় করুন</p>
+                </div>
+            </div>
+            <div class="bg-slate-900/90 px-3.5 py-1.5 rounded-full text-sm font-bold border border-amber-500/30 flex items-center shadow-inner">
+                <i class="fa-solid fa-coins text-amber-400 mr-1.5"></i>
+                <span id="user-balance" class="text-amber-300">$0.00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto w-full p-4 space-y-4 mb-auto">
+
+        <!-- Instruction / Article Card -->
+        <div class="bg-slate-800/90 p-4 rounded-2xl border border-slate-700/70 space-y-3 shadow-lg">
+            <div class="flex items-center space-x-2.5 text-indigo-400">
+                <i class="fa-solid fa-circle-info text-lg"></i>
+                <h2 class="font-bold text-sm text-white">টাস্ক সম্পন্ন করার নিয়মাবলী:</h2>
+            </div>
+            <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                <li>নিচের <span class="text-sky-400 font-semibold">"ওয়েবসাইট ভিজিট করুন"</span> বাটনে ক্লিক করে নির্দিষ্ট সাইটে যান।</li>
+                <li>সেখানে অন্তত <span class="text-amber-400 font-semibold">৩০ সেকেন্ড</span> অপেক্ষা করুন বা ব্রাউজ করুন।</li>
+                <li>এরপর ব্যাক করে এই পেজে ফিরে আসলে আপনার রিওয়ার্ড সফলভাবে যুক্ত হবে।</li>
+                <li>একেবারে নিচের বাটনে ক্লিক করে অতিরিক্ত স্পেশাল এড ভিজিট করতে পারেন।</li>
+            </ul>
+        </div>
+
+        <!-- Timer & Visit Task Section -->
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-2xl border border-slate-700/80 space-y-3 shadow-md text-center">
+            <div class="space-y-1">
+                <h3 class="font-bold text-sm text-white">স্পেশাল ওয়েবসাইট ভিজিট টাস্ক</h3>
+                <p id="timer-status" class="text-xs text-slate-400">রিওয়ার্ড: <span class="text-emerald-400 font-bold">+$0.25</span></p>
+            </div>
+            
+            <!-- মাঝখানের ভিজিট বাটন -->
+            <button id="visit-btn" onclick="startVisitTask()" class="w-full bg-sky-600 hover:bg-sky-500 active:scale-95 text-white font-bold text-xs py-3 rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-globe"></i>
+                <span id="visit-btn-text">ওয়েবসাইট ভিজিট করুন (৩০ সে.)</span>
+            </button>
+        </div>
+
+        <!-- নিচের এডস্টারার ডাইরেক্ট লিংক বাটন -->
+        <div class="bg-gradient-to-br from-indigo-900/60 to-purple-900/60 p-4 rounded-2xl border border-indigo-500/30 space-y-3 shadow-md text-center">
+            <div class="space-y-1">
+                <h3 class="font-bold text-sm text-white">এক্সট্রা আর্নিং অফার</h3>
+                <p class="text-xs text-indigo-200">নিচের বাটনে ক্লিক করে সরাসরি স্পেশাল এড দেখুন।</p>
+            </div>
+            
+            <!-- নিচে আর একটি বাটন -->
+            <a href="https://asiafilm.org/4/692c7291084a34e93f094a8b56b69430" target="_blank" onclick="claimExtraAdReward()" class="block w-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-bold text-xs py-3 rounded-xl shadow-lg transition text-center">
+                <i class="fa-solid fa-bolt mr-1"></i> স্পেশাল এড লিংকে যান (+$0.15)
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-600 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50 whitespace-nowrap">
+        মেসেজ
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/98 backdrop-blur-lg border-t border-slate-800 z-40 py-2.5 px-6 shadow-2xl">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex flex-col items-center justify-center text-slate-400 hover:text-indigo-400 space-y-1 transition hover:scale-105">
+                <i class="fa-solid fa-house text-2xl"></i>
+                <span class="text-xs font-bold">হোম</span>
+            </a>
+            <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-sky-400 space-y-1 transition hover:scale-105">
+                <i class="fa-brands fa-telegram text-2xl"></i>
+                <span class="text-xs font-bold">চ্যানেল</span>
+            </a>
+            <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 space-y-1 transition hover:scale-105">
+                <i class="fa-solid fa-headset text-2xl"></i>
+                <span class="text-xs font-bold">সাপোর্ট</span>
+            </a>
+            <button onclick="showProfileModal()" class="flex flex-col items-center justify-center text-slate-400 hover:text-amber-400 space-y-1 transition hover:scale-105 bg-transparent border-none cursor-pointer">
+                <i class="fa-solid fa-user text-2xl"></i>
+                <span class="text-xs font-bold">প্রোফাইল</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCZZAebuQ3i66C8UNp9qdBI79RS7KHcc",
+            authDomain: "rewardsofficials.firebaseapp.com",
+            projectId: "rewardsofficials",
+            storageBucket: "rewardsofficials.firebasestorage.app",
+            messagingSenderId: "17078908900",
+            appId: "1:17078908900:web:4a11cc8c4f41fac5ceb9f1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        let currentUserId = localStorage.getItem('saved_tg_id') || (tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : null);
+        let currentUsername = tg?.initDataUnsafe?.user?.username || 'User';
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => toast.classList.add('opacity-0'), 3000);
+        }
+
+        window.showProfileModal = function() {
+            if (!currentUserId) return showToast('প্রথমে মেইন পেজ থেকে লগইন করুন!');
+            alert(`👤 প্রোফাইল বিবরণ:\nTelegram ID: ${currentUserId}`);
+        }
+
+        // ব্যালেন্স লোড করার ফাংশন
+        async function loadBalance() {
+            if (!currentUserId) return;
+            try {
+                const userRef = doc(db, 'users', currentUserId);
+                const docSnap = await getDoc(userRef);
+                if (docSnap.exists()) {
+                    const balance = Number(docSnap.data().balance || 0).toFixed(2);
+                    document.getElementById('user-balance').textContent = `$${balance}`;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        loadBalance();
+
+        // ৩০ সেকেন্ড টাইমার ও ভিজিট টাস্ক লজিক
+        let isTaskRunning = false;
+        window.startVisitTask = function() {
+            if (!currentUserId) return showToast('প্রথমে মেইন পেজ থেকে টেলিগ্রাম আইডি সেট করুন!');
+            if (isTaskRunning) return;
+
+            // টার্গেট ওয়েবসাইটে নিয়ে যাওয়া
+            window.open('https://asiafilm.org/4/692c7291084a34e93f094a8b56b69430', '_blank');
+            
+            isTaskRunning = true;
+            let timeLeft = 30;
+            const visitBtn = document.getElementById('visit-btn');
+            const btnText = document.getElementById('visit-btn-text');
+            visitBtn.classList.remove('bg-sky-600', 'hover:bg-sky-500');
+            visitBtn.classList.add('bg-slate-700', 'cursor-not-allowed');
+
+            const timer = setInterval(() => {
+                timeLeft--;
+                btnText.textContent = `দয়া করে অপেক্ষা করুন (${timeLeft} সে.)...`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    finishVisitTask();
+                }
+            }, 1000);
+        };
+
+        async function finishVisitTask() {
+            const visitBtn = document.getElementById('visit-btn');
+            const btnText = document.getElementById('visit-btn-text');
+
+            try {
+                const userRef = doc(db, 'users', currentUserId);
+                await setDoc(userRef, {
+                    balance: increment(0.25),
+                    tasksDone: increment(1)
+                }, { merge: true });
+
+                showToast('🎉 অভিনন্দন! টাস্ক সফল, +$0.25 যোগ হয়েছে।');
+                loadBalance();
+                btnText.textContent = 'টাস্ক সম্পন্ন ✅';
+            } catch (err) {
+                console.error(err);
+                showToast('রিওয়ার্ড যোগ করতে সমস্যা হয়েছে।');
+                visitBtn.classList.remove('bg-slate-700', 'cursor-not-allowed');
+                visitBtn.classList.add('bg-sky-600', 'hover:bg-sky-500');
+                btnText.textContent = 'ওয়েবসাইট ভিজিট করুন (৩০ সে.)';
+                isTaskRunning = false;
+            }
+        }
+
+        // নিচের এক্সট্রা এড বাটনের জন্য বোনাস
+        window.claimExtraAdReward = async function() {
+            if (!currentUserId) return;
+            try {
+                const userRef = doc(db, 'users', currentUserId);
+                await setDoc(userRef, {
+                    balance: increment(0.15)
+                }, { merge: true });
+                showToast('⚡ অতিরিক্ত এড ভিজিটের জন্য +$0.15 যোগ হয়েছে!');
+                setTimeout(loadBalance, 1500);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+    </script>
+</body>
+  </html>
