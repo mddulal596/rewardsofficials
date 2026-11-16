@@ -67,6 +67,34 @@
             <i class="fa-solid fa-sack-dollar absolute -right-4 -bottom-5 text-white/10 text-8xl pointer-events-none"></i>
         </div>
 
+        <!-- ফিচারগুলোর জন্য নতুন ২ লাইনে ৬টি বাটন (Grid Menu) -->
+        <div class="grid grid-cols-3 gap-2.5">
+            <button onclick="showAlert('এড টাস্ক সেকশন খুব শীঘ্রই আসছে!')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+                <div class="text-sky-400 text-lg"><i class="fa-solid fa-tasks"></i></div>
+                <span class="text-xs font-semibold text-slate-200">এড টাস্ক</span>
+            </button>
+            <button onclick="claimDailyBonus()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+                <div class="text-amber-400 text-lg"><i class="fa-solid fa-gift"></i></div>
+                <span class="text-xs font-semibold text-slate-200">ডেইলি বোনাস</span>
+            </button>
+            <button onclick="showAlert('লিডারবোর্ড আপডেট হচ্ছে!')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+                <div class="text-purple-400 text-lg"><i class="fa-solid fa-trophy"></i></div>
+                <span class="text-xs font-semibold text-slate-200">লিডার বোর্ড</span>
+            </button>
+            <button onclick="showAlert('আপনার কোনো হিস্ট্রি নেই!')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+                <div class="text-emerald-400 text-lg"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <span class="text-xs font-semibold text-slate-200">হিস্ট্রি</span>
+            </button>
+            <button onclick="showAlert('পর্যাপ্ত ব্যালেন্স নেই বা উইথড্র সিস্টেম বন্ধ আছে!')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+                <div class="text-rose-400 text-lg"><i class="fa-solid fa-wallet"></i></div>
+                <span class="text-xs font-semibold text-slate-200">উইথড্র</span>
+            </button>
+            <button onclick="showAlert('স্পিন হুইল গেম শীঘ্রই আসছে!')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md">
+                <div class="text-yellow-400 text-lg"><i class="fa-solid fa-dharmachakra"></i></div>
+                <span class="text-xs font-semibold text-slate-200">স্পিন হুইল</span>
+            </button>
+        </div>
+
         <!-- Stats Grid -->
         <div class="grid grid-cols-2 gap-3">
             <div class="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700/70 flex items-center space-x-3">
@@ -107,7 +135,7 @@
                         <p class="text-xs text-emerald-400 font-semibold">+$0.20 রিওয়ার্ড</p>
                     </div>
                 </div>
-                <button id="btn-task-channel" onclick="completeTask('channel', 'https://t.me/rewardofficials', 0.20)" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-xs px-4 py-2 rounded-lg font-semibold transition">
+                <button id="btn-task-channel" onclick="completeTelegramTask('https://t.me/rewardsofficials', 0.20)" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-xs px-4 py-2 rounded-lg font-semibold transition">
                     জয়েন করুন
                 </button>
             </div>
@@ -155,7 +183,7 @@
                         <p class="text-xs text-emerald-400 font-semibold">+$0.15 রিওয়ার্ড</p>
                     </div>
                 </div>
-                <button id="btn-task-instagram" onclick="completeTask('instagram', 'www.instagram.com/mddulal596', 0.15)" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-xs px-4 py-2 rounded-lg font-semibold transition">
+                <button id="btn-task-instagram" onclick="completeTask('instagram', 'https://instagram.com/mddulal596', 0.15)" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-xs px-4 py-2 rounded-lg font-semibold transition">
                     ফলো করুন
                 </button>
             </div>
@@ -216,25 +244,29 @@
         মেসেজ
     </div>
 
-    <!-- Larger Mobile App Style Fixed Bottom Navigation Bar -->
+    <!-- Updated Mobile App Style Fixed Bottom Navigation Bar -->
     <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/98 backdrop-blur-lg border-t border-slate-800 z-40 py-2.5 px-6 shadow-2xl">
         <div class="max-w-md mx-auto flex justify-between items-center">
+            <!-- Home -->
             <a href="#" class="flex flex-col items-center justify-center text-indigo-400 space-y-1 transition hover:scale-105">
                 <i class="fa-solid fa-house text-2xl"></i>
                 <span class="text-xs font-bold">হোম</span>
             </a>
+            <!-- Channel -->
             <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-sky-400 space-y-1 transition hover:scale-105">
                 <i class="fa-brands fa-telegram text-2xl"></i>
                 <span class="text-xs font-bold">চ্যানেল</span>
             </a>
-            <a href="https://t.me/rewardsofficials_bot" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-indigo-400 space-y-1 transition hover:scale-105">
-                <i class="fa-solid fa-robot text-2xl"></i>
-                <span class="text-xs font-bold">বট</span>
-            </a>
+            <!-- Support -->
             <a href="https://t.me/rewardofficials" target="_blank" class="flex flex-col items-center justify-center text-slate-400 hover:text-emerald-400 space-y-1 transition hover:scale-105">
                 <i class="fa-solid fa-headset text-2xl"></i>
                 <span class="text-xs font-bold">সাপোর্ট</span>
             </a>
+            <!-- Profile -->
+            <button onclick="showProfileModal()" class="flex flex-col items-center justify-center text-slate-400 hover:text-amber-400 space-y-1 transition hover:scale-105 bg-transparent border-none cursor-pointer">
+                <i class="fa-solid fa-user text-2xl"></i>
+                <span class="text-xs font-bold">প্রোফাইল</span>
+            </button>
         </div>
     </nav>
 
@@ -263,6 +295,8 @@
 
         let currentUserId = null;
         let currentUsername = "User";
+        let userTotalBalance = "0.00";
+        let userTasksCount = 0;
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -271,9 +305,22 @@
             setTimeout(() => toast.classList.add('opacity-0'), 3000);
         }
 
+        window.showAlert = function(msg) {
+            showToast(msg);
+        }
+
+        window.showProfileModal = function() {
+            if (!currentUserId) {
+                showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
+                return;
+            }
+            alert(`👤 প্রোফাইল বিবরণ:\n\nনাম/ইউজার: ${currentUsername}\nTelegram ID: ${currentUserId}\nমূল ব্যালেন্স: $${userTotalBalance}\nসম্পন্ন টাস্ক: ${userTasksCount} টি`);
+        }
+
         async function loadUserData(telegramId, displayName = null) {
             if (!telegramId) return;
             currentUserId = String(telegramId);
+            currentUsername = displayName || 'User';
 
             document.getElementById('user-display-name').textContent = displayName ? `${displayName} (ID: ${currentUserId})` : `ID: ${currentUserId}`;
             document.getElementById('ref-link-input').value = `https://t.me/rewardsofficials_bot?start=${currentUserId}`;
@@ -286,9 +333,11 @@
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    const balance = Number(data.balance || 0).toFixed(2);
-                    document.getElementById('user-balance').textContent = `$${balance}`;
-                    document.getElementById('tasks-done').textContent = `${data.tasksDone || 0} টি`;
+                    userTotalBalance = Number(data.balance || 0).toFixed(2);
+                    userTasksCount = data.tasksDone || 0;
+
+                    document.getElementById('user-balance').textContent = `$${userTotalBalance}`;
+                    document.getElementById('tasks-done').textContent = `${userTasksCount} টি`;
 
                     tasks.forEach(t => {
                         const field = `task${t.charAt(0).toUpperCase() + t.slice(1)}Done`;
@@ -350,6 +399,50 @@
             } catch (error) {
                 console.error(error);
                 showToast('বোনাস নিতে সমস্যা হয়েছে।');
+            }
+        };
+
+        window.completeTelegramTask = async function(url, reward) {
+            if (!currentUserId) return showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
+            window.open(url, '_blank');
+
+            const btn = document.getElementById('btn-task-channel');
+            btn.textContent = 'যাচাই হচ্ছে...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/verify-channel', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ telegramId: currentUserId })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    const userRef = doc(db, 'users', currentUserId);
+                    const snap = await getDoc(userRef);
+                    if (snap.exists() && snap.data().taskChannelDone) {
+                        return showToast('এই টাস্কটি আগেই সম্পন্ন করেছেন!');
+                    }
+
+                    await setDoc(userRef, {
+                        balance: increment(reward),
+                        tasksDone: increment(1),
+                        taskChannelDone: true
+                    }, { merge: true });
+
+                    showToast(`✅ টাস্ক সম্পন্ন! +$${reward.toFixed(2)} যোগ হয়েছে।`);
+                    await loadUserData(currentUserId, currentUsername);
+                } else {
+                    btn.disabled = false;
+                    btn.textContent = 'জয়েন করুন';
+                    showToast('❌ আপনি চ্যানেলে জয়েন করেননি! আগে জয়েন করুন।');
+                }
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+                btn.textContent = 'আবার চেষ্টা করুন';
+                showToast('ভেরিফিকেশন ব্যর্থ হয়েছে।');
             }
         };
 
