@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro Rewards - View Ad & Earn</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between font-sans antialiased pb-20">
+
+    <!-- Top Header -->
+    <header class="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/80 sticky top-0 z-30 px-4 py-3.5 shadow-lg">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="adtasks.html" class="text-slate-300 hover:text-white bg-slate-700/60 w-9 h-9 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <div>
+                    <h1 class="font-bold text-base leading-tight tracking-wide">বিজ্ঞাপন দেখুন</h1>
+                    <p class="text-xs text-slate-400">৩০ সেকেন্ড অপেক্ষা করুন</p>
+                </div>
+            </div>
+            <div class="bg-slate-900/90 px-3.5 py-1.5 rounded-full text-sm font-bold border border-amber-500/30 flex items-center shadow-inner">
+                <i class="fa-solid fa-coins text-amber-400 mr-1.5"></i>
+                <span id="user-balance" class="text-amber-300">$0.00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto w-full p-4 space-y-6 flex flex-col items-center justify-center mb-auto text-center">
+
+        <!-- ১. কাউন্ট ডাউন সার্কেলের উপরে বিজ্ঞাপন -->
+        <div class="w-full bg-slate-800/60 p-2 rounded-xl border border-slate-700/60 flex justify-center overflow-hidden">
+            <script data-cfasync="false" src="https://bicea.org/14/411d8724fed40c4782765dc176a1d806"></script>
+        </div>
+
+        <!-- ৩০ সেকেন্ড কাউন্ট ডাউন সার্কেল সেকশন -->
+        <div class="bg-slate-800/90 p-6 rounded-3xl border border-slate-700/80 shadow-2xl w-full max-w-xs space-y-4">
+            <h2 class="text-sm font-bold text-slate-200">বিজ্ঞাপন ভিউ চলছে...</h2>
+            
+            <!-- Circular Timer -->
+            <div class="relative w-28 h-28 mx-auto flex items-center justify-center bg-slate-900 rounded-full border-4 border-indigo-500/30 shadow-inner">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span id="countdown-number" class="text-3xl font-extrabold text-amber-400">30</span>
+                </div>
+            </div>
+
+            <p id="status-text" class="text-xs text-slate-400">দয়া করে পেজটিতে অপেক্ষা করুন...</p>
+
+            <button id="claim-reward-btn" onclick="goBackToTasks()" class="hidden w-full bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold text-xs py-3 rounded-xl shadow-lg transition">
+                <i class="fa-solid fa-circle-check mr-1"></i> টাস্ক সম্পন্ন! ফিরে যান
+            </button>
+        </div>
+
+        <!-- ২. কাউন্ট ডাউন সার্কেলের নিচে বিজ্ঞাপন -->
+        <div class="w-full bg-slate-800/60 p-2 rounded-xl border border-slate-700/60 flex justify-center overflow-hidden">
+            <script>
+              atOptions = {
+                'key' : '128ff7d90f946baf6ff5b7c57675f486',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script src="https://bicea.org/22/128ff7d90f946baf6ff5b7c57675f486"></script>
+        </div>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-600 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50 whitespace-nowrap">
+        মেসেজ
+    </div>
+
+    <!-- Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBCZZAebuQ3i66C8UNp9qdBI79RS7KHcc",
+            authDomain: "rewardsofficials.firebaseapp.com",
+            projectId: "rewardsofficials",
+            storageBucket: "rewardsofficials.firebasestorage.app",
+            messagingSenderId: "17078908900",
+            appId: "1:17078908900:web:4a11cc8c4f41fac5ceb9f1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        let currentUserId = localStorage.getItem('saved_tg_id') || (tg?.initDataUnsafe?.user?.id ? String(tg.initDataUnsafe.user.id) : null);
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => toast.classList.add('opacity-0'), 3000);
+        }
+
+        // ব্যালেন্স লোড করা
+        async function loadBalance() {
+            if (!currentUserId) return;
+            try {
+                const userRef = doc(db, 'users', currentUserId);
+                const docSnap = await getDoc(userRef);
+                if (docSnap.exists()) {
+                    const balance = Number(docSnap.data().balance || 0).toFixed(2);
+                    document.getElementById('user-balance').textContent = `$${balance}`;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        loadBalance();
+
+        // পেজ ওপেন হওয়ার সাথে সাথেই ৩০ সেকেন্ড কাউন্টডাউন শুরু
+        let timeLeft = 30;
+        const countdownEl = document.getElementById('countdown-number');
+        const statusText = document.getElementById('status-text');
+        const claimBtn = document.getElementById('claim-reward-btn');
+
+        const timer = setInterval(async () => {
+            timeLeft--;
+            countdownEl.textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                statusText.textContent = 'সময় শেষ! আপনার রিওয়ার্ড যোগ করা হয়েছে।';
+                countdownEl.textContent = '✓';
+                claimBtn.classList.remove('hidden');
+
+                // ব্যালেন্সে রিওয়ার্ড যোগ করা ($0.05)
+                if (currentUserId) {
+                    try {
+                        const userRef = doc(db, 'users', currentUserId);
+                        await setDoc(userRef, {
+                            balance: increment(0.05),
+                            tasksDone: increment(1)
+                        }, { merge: true });
+                        showToast('🎉 সফল! +$0.05 রিওয়ার্ড যোগ হয়েছে।');
+                        loadBalance();
+                    } catch (err) {
+                        console.error(err);
+                    }
+                } else {
+                    showToast('⚠️ আইডি পাওয়া যায়নি, তবে টাস্ক শেষ!');
+                }
+            }
+        }, 1000);
+
+        window.goBackToTasks = function() {
+            window.location.href = 'adtasks.html';
+        };
+    </script>
+</body>
+</html>
