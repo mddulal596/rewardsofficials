@@ -43,7 +43,7 @@ console.log("Firebase initialized successfully via Web SDK.");
 // বট ইনিশিয়েলাইজ
 const bot = new Telegraf(BOT_TOKEN);
 
-// ১. /start কমান্ড হ্যান্ডলার (অ্যাকাউন্ট রেজিস্ট্রেশন)
+// ১. /start কমান্ড হ্যান্ডলার (অ্যাকাউন্ট রেজিস্ট্রেশন ও ইনলাইন বাটনসহ)
 bot.start(async (ctx) => {
   try {
     const telegramId = String(ctx.from.id);
@@ -61,10 +61,24 @@ bot.start(async (ctx) => {
         tasksDone: 0,
         createdAt: serverTimestamp()
       });
-      ctx.reply(`স্বাগতম! আপনার অ্যাকাউন্ট তৈরি হয়েছে। আপনার টেলিগ্রাম আইডি: ${telegramId}`);
-    } else {
-      ctx.reply(`স্বাগতম! আপনি আগেই আমাদের সিস্টেমে রেজিস্টার্ড আছেন।`);
     }
+
+    // স্বাগতম মেসেজ এবং সাথে আকর্ষণীয় ইনলাইন বাটনসমূহ
+    await ctx.reply(`🌟 **স্বাগতম Pro Rewards-এ!**\n\nনিচের বাটন থেকে আমাদের মিনি অ্যাপ ওপেন করে ডেইলি বোনাস, টাস্ক ও আপনার ব্যালেন্স চেক করুন। 👇`, {
+      parse_mode: 'Markdown',
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: "🚀 Open Mini App", web_app: { url: "https://mddulal596.github.io/rewardsofficials/" } }
+          ],
+          [
+            { text: "📢 Official Channel", url: "https://t.me/rewardofficials" },
+            { text: "🤖 Support Bot", url: "https://t.me/rewardsofficials_bot" }
+          ]
+        ]
+      }
+    });
+
   } catch (error) {
     console.error("Error in /start command:", error);
     ctx.reply('দুঃখিত, একটি সমস্যা হয়েছে।');
