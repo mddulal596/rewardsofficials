@@ -51,23 +51,7 @@
             </div>
         </div>
 
-        <!-- Hero Card & Daily Bonus -->
-        <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 rounded-2xl p-5 shadow-xl relative overflow-hidden border border-indigo-400/20">
-            <div class="relative z-10 flex justify-between items-center">
-                <div class="space-y-1.5 max-w-[68%]">
-                    <span class="inline-block bg-white/15 text-[11px] font-semibold px-2.5 py-0.5 rounded-full text-indigo-100">ডেইলি রিওয়ার্ড</span>
-                    <h2 class="text-lg font-bold leading-snug">প্রতিদিন ফ্রি বোনাস ক্লেইম করুন!</h2>
-                    <p class="text-xs text-indigo-200">প্রতি ২৪ ঘণ্টায় একবার $0.50 বোনাস নিন।</p>
-                </div>
-                <button id="daily-btn" onclick="claimDailyBonus()" class="bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-bold text-xs px-4 py-3 rounded-xl shadow-lg transition flex flex-col items-center">
-                    <i class="fa-solid fa-gift text-lg mb-1"></i>
-                    <span id="daily-btn-text">ক্লেইম $0.50</span>
-                </button>
-            </div>
-            <i class="fa-solid fa-sack-dollar absolute -right-4 -bottom-5 text-white/10 text-8xl pointer-events-none"></i>
-        </div>
-
-        <!-- ফিচারগুলোর জন্য নতুন ৬টি গ্রিড বাটন (আলাদা পেজ লিংকযুক্ত) -->
+        <!-- ফিচারগুলোর জন্য ৬টি গ্রিড বাটন (ডেইলি রিওয়ার্ড ব্যানারটি এখান থেকে সরিয়ে দেওয়া হয়েছে) -->
         <div class="grid grid-cols-3 gap-2.5">
             <!-- ১. এড টাস্ক পেজ -->
             <a href="adtasks.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md no-underline">
@@ -338,17 +322,6 @@
 
                     document.getElementById('user-balance').textContent = `$${userTotalBalance}`;
                     document.getElementById('tasks-done').textContent = `${userTasksCount} টি`;
-
-                    if (data.lastDailyClaim) {
-                        const lastClaim = data.lastDailyClaim.toDate();
-                        if (new Date() - lastClaim < 24 * 60 * 60 * 1000) {
-                            const dailyBtn = document.getElementById('daily-btn');
-                            dailyBtn.disabled = true;
-                            dailyBtn.classList.remove('bg-amber-400', 'hover:bg-amber-300');
-                            dailyBtn.classList.add('bg-slate-700', 'text-slate-400', 'cursor-not-allowed');
-                            document.getElementById('daily-btn-text').textContent = 'ক্লেইমড ⏳';
-                        }
-                    }
                 } else {
                     await setDoc(userRef, {
                         telegramId: currentUserId,
@@ -365,30 +338,6 @@
                 showToast('ডেটা লোড করতে সমস্যা হয়েছে!');
             }
         }
-
-        window.claimDailyBonus = async function() {
-            if (!currentUserId) return showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
-            try {
-                const userRef = doc(db, 'users', currentUserId);
-                const docSnap = await getDoc(userRef);
-                const data = docSnap.exists() ? docSnap.data() : {};
-
-                if (data.lastDailyClaim && (new Date() - data.lastDailyClaim.toDate() < 24 * 60 * 60 * 1000)) {
-                    return showToast('⏳ আপনি আজ ইতিমধ্যে ডেইলি বোনাস নিয়েছেন!');
-                }
-
-                await setDoc(userRef, {
-                    balance: increment(0.50),
-                    lastDailyClaim: serverTimestamp()
-                }, { merge: true });
-
-                showToast('🎉 অভিনন্দন! $0.50 ডেইলি বোনাস যোগ হয়েছে!');
-                await loadUserData(currentUserId, currentUsername);
-            } catch (error) {
-                console.error(error);
-                showToast('বোনাস নিতে সমস্যা হয়েছে।');
-            }
-        };
 
         window.completeTelegramTask = async function(url, reward) {
             if (!currentUserId) return showToast('প্রথমে টেলিগ্রাম আইডি দিয়ে লগইন করুন!');
