@@ -55,20 +55,37 @@ bot.start(async (ctx) => {
       });
     }
 
-    // Node.js (Telegraf বা node-telegram-bot-api) এর উদাহরণ:
-bot.sendMessage(chatId, "স্বাগতম Pro Rewards-এ!\n\nনিচের বাটন থেকে আমাদের মিনি অ্যাপ ওপেন করে ডেইলি বোনাস, টাস্ক ও আপনার ব্যালেন্স চেক করুন। 👇", {
-    reply_markup: {
-        inline_keyboard: [
-            [
-                { text: "🚀 Open Mini App", web_app: { url: "https://rewardsofficials.onrender.com" } }
-            ],
-            [
-                { text: "📢 Official Channel", url: "https://t.me/rewardofficials" },
-                { text: "🤖 Support Bot", url: "https://t.me/rewardsofficials_bot" }
+
+bot.sendMessage(chatId,
+    "🌟 স্বাগতম Pro Rewards-এ!\n\nনিচের বাটন থেকে আমাদের মিনি অ্যাপ ওপেন করে ডেইলি বোনাস, টাস্ক ও আপনার ব্যালেন্স চেক করুন। 👇",
+    {
+        reply_markup: {
+            inline_keyboard: [
+                [
+                    {
+                        text: "🚀 Open Mini App",
+                        web_app: {
+                            url: "https://rewardsofficials.onrender.com"
+                        }
+                    }
+                ],
+                [
+                    {
+                        text: "📢 Official Channel",
+                        url: "https://t.me/rewardofficials"
+                    }
+                ],
+                [
+                    {
+                        text: "🤖 Support Bot",
+                        url: "https://t.me/rewardsofficials_bot"
+                    }
+                ]
             ]
-        ]
+        }
     }
-});
+);
+
 
 // মিনি অ্যাপ থেকে চ্যানেল টাস্ক ভেরিফাই করার জন্য API রাউট
 app.post('/verify-channel', async (req, res) => {
