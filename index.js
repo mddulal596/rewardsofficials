@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 // বট টোকেন
-const BOT_TOKEN = "9217390232:AAFmp5lX5BkRLq0xd_g7inFFGtRV1SGKRto";
+const BOT_TOKEN = "9217390232:AAEc8kenpRlPO1n_2c55kClI7AQjvzJZwkI";
 
 if (!BOT_TOKEN) {
   console.error("Error: BOT_TOKEN is missing!");
