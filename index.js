@@ -55,24 +55,19 @@ bot.start(async (ctx) => {
       });
     }
 
-    await ctx.reply(`🌟 **স্বাগতম Pro Rewards-এ!**\n\nনিচের বাটন থেকে আমাদের মিনি অ্যাপ ওপেন করে ডেইলি বোনাস, টাস্ক ও আপনার ব্যালেন্স চেক করুন। 👇`, {
-      parse_mode: 'Markdown',
-      reply_markup: {
+    // Node.js (Telegraf বা node-telegram-bot-api) এর উদাহরণ:
+bot.sendMessage(chatId, "স্বাগতম Pro Rewards-এ!\n\nনিচের বাটন থেকে আমাদের মিনি অ্যাপ ওপেন করে ডেইলি বোনাস, টাস্ক ও আপনার ব্যালেন্স চেক করুন। 👇", {
+    reply_markup: {
         inline_keyboard: [
-          [
-            { text: "🚀 Open Mini App", web_app: { url: "https://mddulal596.github.io/rewardsofficials/" } }
-          ],
-          [
-            { text: "📢 Official Channel", url: "https://t.me/rewardofficials" },
-            { text: "🤖 Support Bot", url: "https://t.me/rewardsofficials_bot" }
-          ]
+            [
+                { text: "🚀 Open Mini App", web_app: { url: "https://rewardsofficials.onrender.com" } }
+            ],
+            [
+                { text: "📢 Official Channel", url: "https://t.me/rewardofficials" },
+                { text: "🤖 Support Bot", url: "https://t.me/rewardsofficials_bot" }
+            ]
         ]
-      }
-    });
-  } catch (error) {
-    console.error("Error in /start command:", error);
-    ctx.reply('দুঃখিত, একটি সমস্যা হয়েছে।');
-  }
+    }
 });
 
 // মিনি অ্যাপ থেকে চ্যানেল টাস্ক ভেরিফাই করার জন্য API রাউট
