@@ -24,8 +24,9 @@
     <header class="bg-slate-800/90 backdrop-blur-md border-b border-slate-700/80 sticky top-0 z-30 px-4 py-3.5 shadow-lg">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-indigo-600 to-purple-600 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
-                    <i class="fa-solid fa-crown text-amber-300 text-lg"></i>
+                <!-- টেলিগ্রাম প্রোফাইল ছবি দেখানোর জায়গা -->
+                <div id="user-avatar-container" class="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center shadow-md border border-indigo-400/30">
+                    <i id="default-avatar-icon" class="fa-solid fa-crown text-amber-300 text-lg"></i>
                 </div>
                 <div>
                     <h1 class="font-bold text-base leading-tight tracking-wide">Pro Rewards</h1>
@@ -51,7 +52,7 @@
             </div>
         </div>
 
-        <!-- ফিচারগুলোর জন্য ৬টি গ্রিড বাটন (ডেইলি রিওয়ার্ড ব্যানারটি এখান থেকে সরিয়ে দেওয়া হয়েছে) -->
+        <!-- ফিচারগুলোর জন্য ৬টি গ্রিড বাটন -->
         <div class="grid grid-cols-3 gap-2.5">
             <!-- ১. এড টাস্ক পেজ -->
             <a href="adtasks.html" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 p-3 rounded-xl flex flex-col items-center justify-center space-y-1.5 transition active:scale-95 shadow-md no-underline">
@@ -303,10 +304,16 @@
             alert(`👤 প্রোফাইল বিবরণ:\n\nনাম/ইউজার: ${currentUsername}\nTelegram ID: ${currentUserId}\nমূল ব্যালেন্স: $${userTotalBalance}\nসম্পন্ন টাস্ক: ${userTasksCount} টি`);
         }
 
-        async function loadUserData(telegramId, displayName = null) {
+        async function loadUserData(telegramId, displayName = null, photoUrl = null) {
             if (!telegramId) return;
             currentUserId = String(telegramId);
             currentUsername = displayName || 'User';
+
+            // টেলিগ্রাম প্রোফাইল ছবি সেট করার লজিক
+            if (photoUrl) {
+                const avatarContainer = document.getElementById('user-avatar-container');
+                avatarContainer.innerHTML = `<img src="${photoUrl}" alt="Profile" class="w-full h-full object-cover">`;
+            }
 
             document.getElementById('user-display-name').textContent = displayName ? `${displayName} (ID: ${currentUserId})` : `ID: ${currentUserId}`;
             document.getElementById('ref-link-input').value = `https://t.me/rewardsofficials_bot?start=${currentUserId}`;
@@ -434,7 +441,7 @@
             const idVal = document.getElementById('manual-tg-id').value.trim();
             if (!idVal) return showToast('সঠিক Telegram ID দিন!');
             localStorage.setItem('saved_tg_id', idVal);
-            loadUserData(idVal, 'Web User');
+            loadUserData(idVal, 'Web User', null);
         };
 
         const tgUser = tg?.initDataUnsafe?.user;
@@ -444,14 +451,14 @@
 
         if (tgUser && tgUser.id) {
             currentUsername = tgUser.username || tgUser.first_name || 'User';
-            loadUserData(tgUser.id, tgUser.first_name);
+            loadUserData(tgUser.id, tgUser.first_name, tgUser.photo_url);
         } else if (paramId) {
-            loadUserData(paramId, 'Web User');
+            loadUserData(paramId, 'Web User', null);
         } else {
             document.getElementById('browser-login-box').classList.remove('hidden');
             if (savedId) {
                 document.getElementById('manual-tg-id').value = savedId;
-                loadUserData(savedId, 'Web User');
+                loadUserData(savedId, 'Web User', null);
             } else {
                 document.getElementById('user-display-name').textContent = 'গেস্ট মোড';
             }
